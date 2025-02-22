@@ -28,7 +28,7 @@ def test_update_history_not_full():
     h_after = update_history(paper, h_before, depth)
 
     # Validate
-    assert len(h_after) == (depth // 2) + 1
+    assert len(h_after) == len(h_before) + 1
     assert h_after[-1] == 'url0'
     assert h_after[0] == paper.url
 
