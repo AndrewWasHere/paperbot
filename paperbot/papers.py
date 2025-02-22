@@ -22,7 +22,7 @@ def load_history(path: str) -> list:
     except FileNotFoundError:
         history = []
 
-    return history
+    return [l.strip() for l in history]
 
 
 def update_history(paper: Paper, history: list, depth: int) -> list:
@@ -31,8 +31,9 @@ def update_history(paper: Paper, history: list, depth: int) -> list:
 
 
 def save_history(history: list, path: str):
+    h = (l + '\n' for l in history)
     with open(path, 'w') as f:
-        f.writelines(history)
+        f.writelines(h)
 
 
 def select_paper(repo: str, history: list) -> Paper:
