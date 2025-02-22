@@ -16,6 +16,7 @@ def get_paper_cfg(config):
 
 
 def load_history(path: str) -> list:
+    """Load history from `path`."""
     try:
         with open(path, 'r') as f:
             history = f.readlines()
@@ -26,11 +27,13 @@ def load_history(path: str) -> list:
 
 
 def update_history(paper: Paper, history: list, depth: int) -> list:
+    """Add `paper` to `history`, preserving `depth`."""
     new_history = [paper.url] + history
     return new_history[:depth]
 
 
 def save_history(history: list, path: str):
+    """Save `history` to `path`."""
     h = (l + '\n' for l in history)
     with open(path, 'w') as f:
         f.writelines(h)
