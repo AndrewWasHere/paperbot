@@ -1,0 +1,13 @@
+# secrets
+discord.toml
+bluesky.toml
+
+# pixi environments
+.pixi
+*.egg-info
+
+# Python
+__pycache__/
+
+# VSCode
+.vscode/
