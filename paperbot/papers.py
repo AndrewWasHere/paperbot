@@ -3,8 +3,9 @@ import os
 from random import choice
 import re
 
+from paperbot.common import Paper
 
-Paper = namedtuple('Paper', ['title', 'url'])
+
 Repo = namedtuple('Repo', ['path', 'url'])
 
 
