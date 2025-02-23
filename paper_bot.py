@@ -2,7 +2,7 @@ import argparse
 import os
 import tomllib
 
-from paperbot import papers
+from paperbot import papers, publish
 
 
 def parse_command_line():
@@ -51,7 +51,19 @@ def choose_paper(config):
 
 
 def publish(paper, config):
-    print(paper)
+    publish_cfg = publish.get_publish_cfg(config)
+    destinations = publish_cfg['destinations']
+
+    if len(destinations) == 0:
+        # No destinations. Print paper to stdout.
+        print(paper)
+        return
+   
+    if 'discord' in destinations:
+        publish.to_discord(paper, publish_cfg['discord_credentials'])
+
+    if 'bluesky' in destinations:
+        publish.to_bluesky(paper, publish_cfg['bluesky_credentials'])
     
 
 def main():
