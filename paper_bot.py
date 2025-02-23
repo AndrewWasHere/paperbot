@@ -16,9 +16,22 @@ def parse_command_line():
     return args
 
 
+def expand_path(path):
+    path = os.path.expanduser(path)
+    if not os.path.isabs(path):
+        path = os.path.join(os.path.dirname(__file__), path)
+
+    return path
+
+
 def load_config(path):
     with open(path, 'rb') as f:
         cfg = tomllib.load(f)
+
+    cfg['papers_we_love']['path'] = expand_path(cfg['papers_we_love']['path'])
+    cfg['history']['path'] = expand_path(cfg['history']['path'])
+    cfg['discord']['credentials'] = expand_path(cfg['discord']['credentials'])
+    cfg['bluesky']['credentials'] = expand_path(cfg['bluesky']['credentials'])
 
     return cfg
 
