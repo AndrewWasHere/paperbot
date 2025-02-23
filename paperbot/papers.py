@@ -63,7 +63,7 @@ def papers_in_readme(root: str, file: str, repo: Repo):
     return papers
 
 
-def load_repo(path: str, url: str) -> list:
+def get_papers_in_repo(path: str, url: str) -> list:
     """Load papers from Papers We Love repo."""
     papers = []
     repo = Repo(path=path, url=url)
@@ -78,8 +78,11 @@ def load_repo(path: str, url: str) -> list:
     return papers
 
 
-def select_paper(all_papers: list, history: list) -> Paper:
+def select_paper(all_papers: list, history: list) -> Paper | None:
     """Select a paper from `all_papers` that isn't in `history`."""
+    if len(all_papers) == 0:
+        return None
+    
     while True:
         paper = choice(all_papers)
         if paper.url not in history:
