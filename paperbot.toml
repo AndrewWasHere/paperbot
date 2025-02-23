@@ -1,0 +1,31 @@
+#
+# Paperbot configuration
+#
+
+# Places to publish paper suggestions (names of sections, below)
+destinations = ["discord", "bluesky"]
+
+[papers_we_love]
+# Path to locally cloned Papers We Love git repo.
+path = "papers_we_love"
+
+# URL of remote Papers We Love git repo.
+url = "https://github.com/papers-we-love/papers-we-love"
+
+[history]
+# History buffer containing the last `depth` suggested papers, which will not
+# be suggested again until they leave the history buffer.
+path = "history.txt"
+depth = 442
+
+[discord]
+# Credentials file contains a single toml entry:
+#   url = "<path>"
+credentials = "discord.toml"
+
+[bluesky]
+# Credentials file contains two toml entries:
+#   user = "<user>"
+#   pw = "<password>"
+credentials = "bluesky.toml"
+

@@ -1,13 +1,18 @@
 from collections import namedtuple
+import os
+from random import choice
+import re
 
 
 Paper = namedtuple('Paper', ['title', 'url'])
+Repo = namedtuple('Repo', ['path', 'url'])
 
 
 def get_paper_cfg(config):
     """Extract paper configuration values from paperbot config."""
     cfg = dict(
-        repo=config['papers_we_love'],
+        repo_path=config['papers_we_love']['path'],
+        repo_url=config['papers_we_love']['url'],
         history=config['history']['path'],
         depth=config['history']['depth']
     )
@@ -39,5 +44,44 @@ def save_history(history: list, path: str):
         f.writelines(h)
 
 
-def select_paper(repo: str, history: list) -> Paper:
-    """Select a paper from `repo` that isn't in `history`."""
+def papers_in_readme(root: str, file: str, repo: Repo):
+    papers = []
+    subdir = root[len(repo.path):]
+    base_url = repo.url + '/blob/main' + subdir
+    path = os.path.join(root, file)
+    with open(path, 'r') as f:
+        for line in f:
+            m = re.match(r'.*\[(.*)\]\((.*)\).*', line)
+            if not m or not m[2].endswith('.pdf'):
+                continue
+
+            title = m[1]
+
+            url = m[2] if m[2].startswith('http') else f'{base_url}/{m[2]}'
+            papers.append(Paper(title=title, url=url))
+
+    return papers
+
+
+def load_repo(path: str, url: str) -> list:
+    """Load papers from Papers We Love repo."""
+    papers = []
+    repo = Repo(path=path, url=url)
+    for root, dirs, files in os.walk(path):
+        if root == path:
+            continue
+        for f in files:
+            if f == 'README.md':
+                papers += papers_in_readme(root, f, repo)
+                break
+
+    return papers
+
+
+def select_paper(all_papers: list, history: list) -> Paper:
+    """Select a paper from `all_papers` that isn't in `history`."""
+    while True:
+        paper = choice(all_papers)
+        if paper.url not in history:
+            return paper
+    
