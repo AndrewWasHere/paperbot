@@ -2,7 +2,7 @@ import argparse
 import os
 import tomllib
 
-import paperbot
+from paperbot import papers
 
 
 def parse_command_line():
@@ -24,18 +24,21 @@ def load_config(path):
 
 
 def choose_paper(config):
-    paper_cfg = paperbot.papers.get_paper_cfg(config)
-    history = paperbot.papers.load_history(paper_cfg['history'])
-    repo = paperbot.papers.load_repo(paper_cfg['repo_path'], paper_cfg['repo_url'])
-    paper = paperbot.papers.select_paper(repo, history)
-    history = paperbot.papers.update_history(paper, history, paper_cfg['depth'])
-    paperbot.papers.save_history(history, paper_cfg['history'])
+    paper_cfg = papers.get_paper_cfg(config)
+    history = papers.load_history(paper_cfg['history'])
+    papers_in_repo = papers.get_papers_in_repo(
+        paper_cfg['repo_path'], 
+        paper_cfg['repo_url']
+    )
+    if paper := papers.select_paper(papers_in_repo, history):
+        history = papers.update_history(paper, history, paper_cfg['depth'])
+        papers.save_history(history, paper_cfg['history'])
 
     return paper
 
 
 def publish(paper, config):
-    pass
+    print(paper)
     
 
 def main():
