@@ -50,7 +50,7 @@ def choose_paper(config):
     return paper
 
 
-def publish(paper, config):
+def publish_paper(paper, config):
     publish_cfg = publish.get_publish_cfg(config)
     destinations = publish_cfg['destinations']
 
@@ -71,7 +71,7 @@ def main():
     config = load_config(args.config)
 
     paper = choose_paper(config)
-    publish(paper, config)
+    publish_paper(paper, config)
 
 
 if __name__ == '__main__':
