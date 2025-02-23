@@ -7,7 +7,7 @@ destinations = ["discord", "bluesky"]
 
 [papers_we_love]
 # Path to locally cloned Papers We Love git repo.
-path = "papers_we_love"
+path = "~/projects/papers-we-love"
 
 # URL of remote Papers We Love git repo.
 url = "https://github.com/papers-we-love/papers-we-love"
@@ -20,7 +20,7 @@ depth = 442
 
 [discord]
 # Credentials file contains a single toml entry:
-#   url = "<path>"
+#   url = "<url>"
 credentials = "discord.toml"
 
 [bluesky]
