@@ -1,5 +1,10 @@
 # Paperbot
 
-Python version of read-a-paper.jl to take advantage of the atproto library to
-post to BlueSky Social.
+The engine behind [lovedpaperbot](https://bsky.app/profile/lovedpaperbot.bsky.social) on Bluesky Social.
 
+It can also post elsewhere. Just add a publisher function!
+
+## License
+
+This software is licensed under the MIT License. See LICENSE.txt or
+http://opensource.org/licenses/MIT.
