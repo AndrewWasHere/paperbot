@@ -51,8 +51,8 @@ def papers_in_readme(root: str, file: str, repo: Repo):
     path = os.path.join(root, file)
     with open(path, 'r') as f:
         for line in f:
-            m = re.match(r'.*\[(.*)\]\((.*)\).*', line)
-            if not m or not m[2].endswith('.pdf'):
+            m = re.match(r'.*\[(.*)\]\((\S*)\).*', line)
+            if not m:
                 continue
 
             title = m[1]

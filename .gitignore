@@ -2,6 +2,9 @@
 discord.toml
 bluesky.toml
 
+# generated files
+history.txt
+
 # pixi environments
 .pixi
 *.egg-info
