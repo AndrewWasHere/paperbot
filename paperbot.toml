@@ -28,4 +28,3 @@ credentials = "discord.toml"
 #   user = "<user>"
 #   pw = "<password>"
 credentials = "bluesky.toml"
-
