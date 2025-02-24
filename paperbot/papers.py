@@ -79,7 +79,7 @@ def get_papers_in_repo(path: str, url: str) -> list:
     return papers
 
 
-def select_paper(all_papers: list, history: list) -> Paper | None:
+def select_paper(all_papers: list, history: list):
     """Select a paper from `all_papers` that isn't in `history`."""
     if len(all_papers) == 0:
         return None
