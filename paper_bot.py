@@ -1,6 +1,11 @@
 import argparse
 import os
-import tomllib
+import sys
+
+if sys.version_info.major == 3 and sys.version_info.minor < 11:
+    import tomli as tomllib
+else:
+    import tomllib
 
 from paperbot import papers, publish
 
