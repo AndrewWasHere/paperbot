@@ -61,9 +61,9 @@ def to_bluesky(paper: Paper, credentials: str):
     """Publish `paper` to bluesky using `credentials`."""
     user, pw = bluesky_extract_from_credentials(credentials)
     content = client_utils.TextBuilder().text(
-        f"How about reading '{paper.title}' @ "
+        f'How about reading '
     ).link(
-        paper.url, 
+        f'"{paper.title}"', 
         paper.url
     ).text(
         '?'
@@ -71,4 +71,4 @@ def to_bluesky(paper: Paper, credentials: str):
     client = Client()
     client.login(user, pw)
     client.send_post(text=content)
-    print(f'`{msg.format(paper)}` published to bluesky')
+    print(f'`How about reading ["{paper.title}"]({paper.url})?` published to bluesky.')
