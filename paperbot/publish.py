@@ -66,7 +66,12 @@ def to_bluesky(paper: Paper, credentials: str):
         f'"{paper.title}"', 
         paper.url
     ).text(
-        '?'
+        ' ('
+    ).link(
+        f'{paper.url}',
+        paper.url
+    ).text(
+        ')?'
     )
     client = Client()
     client.login(user, pw)
