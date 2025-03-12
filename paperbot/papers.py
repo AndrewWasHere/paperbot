@@ -52,7 +52,7 @@ def papers_in_readme(root: str, file: str, repo: Repo):
     path = os.path.join(root, file)
     with open(path, 'r') as f:
         for line in f:
-            m = re.match(r'.*\[(.*)\]\((\S*)\).*', line)
+            m = re.match(r'\*.*\[(.*)\]\((\S*)\).*', line)
             if not m:
                 continue
 
