@@ -56,7 +56,7 @@ def papers_in_readme(root: str, file: str, repo: Repo):
             m = re.match(r'\*.*\[:scroll:\]\((\S*)\).*\[(.*?)\]\((\S*)\).*', line)
             if m:
                 title = m[2]
-                url = m[1] if m[1].startswith('http') else f'{base_url}/{m[2]}'
+                url = m[1] if m[1].startswith('http') else f'{base_url}/{m[1]}'
             else:
                 # Match '* [<title>](<url>)' or '* :scroll: [<title>](<url>)'
                 m = re.match(r'\*.*\[(.*?)\]\((\S*)\).*', line)
