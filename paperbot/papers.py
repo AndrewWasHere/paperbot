@@ -52,14 +52,20 @@ def papers_in_readme(root: str, file: str, repo: Repo):
     path = os.path.join(root, file)
     with open(path, 'r') as f:
         for line in f:
-            m = re.match(r'\*.*?\[(.*?)\]\((\S*)\).*', line)
-            if not m:
-                continue
+            # Match '* [:scroll:](<papers-we-love url>) [<title>](<original url>)'
+            m = re.match(r'\*.*\[:scroll:\]\((\S*)\).*\[(.*?)\]\((\S*)\).*', line)
+            if m:
+                title = m[2]
+                url = m[1] if m[1].startswith('http') else f'{base_url}/{m[2]}'
+            else:
+                # Match '* [<title>](<url>)' or '* :scroll: [<title>](<url>)'
+                m = re.match(r'\*.*\[(.*?)\]\((\S*)\).*', line)
+                if m:
+                    title = m[1]
+                    url = m[2] if m[2].startswith('http') else f'{base_url}/{m[2]}'
 
-            title = m[1]
-
-            url = m[2] if m[2].startswith('http') else f'{base_url}/{m[2]}'
-            papers.append(Paper(title=title, url=url))
+            if m:
+                papers.append(Paper(title=title, url=url))
 
     return papers
 
