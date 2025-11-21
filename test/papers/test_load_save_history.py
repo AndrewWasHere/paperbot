@@ -1,6 +1,6 @@
 from tempfile import NamedTemporaryFile
 
-from paperbot.papers import load_history, save_history
+from paperbot.history import load_history, save_history
 
 
 def test_load_empty_history():

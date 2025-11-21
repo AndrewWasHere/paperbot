@@ -6,11 +6,11 @@ else:
 
 import requests
 
-from atproto import Client, client_utils
+# from atproto import Client, client_utils
 
 from paperbot.common import Paper
 
-msg = "How about reading '{0.title}' @ {0.url} ?"
+msg = "'{0.title}' @ {0.url}"
 
 def get_publish_cfg(config: dict) -> dict:
     """Extract publish configuration values from paperbot config."""
@@ -32,14 +32,14 @@ def discord_url_from_credentials(path: str) -> str:
     return url
 
 
-def to_discord(paper: Paper, credentials: str):
-    """Publish `paper` to discord using `credentials`."""
+def to_discord(papers: list[Paper], credentials: str):
+    """Publish `papers` to discord using `credentials`."""
     url = discord_url_from_credentials(credentials)
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-    content = msg.format(paper)
+    content = f'How about reading {" or ".join([msg.format(paper) for paper in papers])}?'
     body = {
         'content': content
     }
@@ -57,23 +57,23 @@ def bluesky_extract_from_credentials(path: str) -> tuple:
     return user, pw
 
 
-def to_bluesky(paper: Paper, credentials: str):
-    """Publish `paper` to bluesky using `credentials`."""
-    user, pw = bluesky_extract_from_credentials(credentials)
-    content = client_utils.TextBuilder().text(
-        f'How about reading '
-    ).link(
-        f'"{paper.title}"', 
-        paper.url
-    ).text(
-        ' ('
-    ).link(
-        f'{paper.url}',
-        paper.url
-    ).text(
-        ')?'
-    )
-    client = Client()
-    client.login(user, pw)
-    client.send_post(text=content)
-    print(f'`How about reading ["{paper.title}"]({paper.url})?` published to bluesky.')
+# def to_bluesky(paper: Paper, credentials: str):
+#     """Publish `paper` to bluesky using `credentials`."""
+#     user, pw = bluesky_extract_from_credentials(credentials)
+#     content = client_utils.TextBuilder().text(
+#         f'How about reading '
+#     ).link(
+#         f'"{paper.title}"', 
+#         paper.url
+#     ).text(
+#         ' ('
+#     ).link(
+#         f'{paper.url}',
+#         paper.url
+#     ).text(
+#         ')?'
+#     )
+#     client = Client()
+#     client.login(user, pw)
+#     client.send_post(text=content)
+#     print(f'`How about reading ["{paper.title}"]({paper.url})?` published to bluesky.')

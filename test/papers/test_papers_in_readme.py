@@ -16,6 +16,9 @@ def readme():
 * [A paper that isn't a PDF](https://arxiv.org/10.22345/12345.54321)
 * [:scroll:](local.pdf) [A paper that is local and external](http://external.url/54321.12345)
 * [3-Sweep: Extracting Editable Objects from a Single Photo](http://www.cs.tau.ac.il/~dcor/articles/2013/3-Sweep-Extracting-Editable-Objects.pdf) - [Video](https://www.youtube.com/watch?v=Oie1ZXWceqM)
+* [:scroll:](https://github.com/papers-we-love/papers-we-love/blob/master/time_series/ts-asap.pdf)
+  [ASAP: Automatic Smoothing for Attention Prioritization in Streaming Time Series Visualization](https://arxiv.org/abs/1703.00983)  - Kexin Rong, Peter Bailis
+
 """
 
     with TemporaryDirectory() as d:
@@ -37,7 +40,7 @@ def test_papers_in_readme(readme):
     papers = papers_in_readme(root, file, repo)
 
     # Test
-    assert len(papers) == 5
+    assert len(papers) == 6
     assert papers[0].title == 'Architectural Styles and the Design of Network-based Software Architectures (REST) by Roy Fielding'
     assert papers[0].url == 'https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf'
     assert papers[1].title == 'Little Manual of API Design'
@@ -48,3 +51,5 @@ def test_papers_in_readme(readme):
     assert papers[3].url == url + '/blob/main/' + subdir + '/local.pdf'
     assert papers[4].title == '3-Sweep: Extracting Editable Objects from a Single Photo'
     assert papers[4].url == 'http://www.cs.tau.ac.il/~dcor/articles/2013/3-Sweep-Extracting-Editable-Objects.pdf'
+    assert papers[5].title == 'ASAP: Automatic Smoothing for Attention Prioritization in Streaming Time Series Visualization'
+    assert papers[5].url == 'https://github.com/papers-we-love/papers-we-love/blob/master/time_series/ts-asap.pdf'

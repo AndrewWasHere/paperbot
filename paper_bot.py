@@ -7,7 +7,7 @@ if sys.version_info.major == 3 and sys.version_info.minor < 11:
 else:
     import tomllib
 
-from paperbot import papers, publish
+from paperbot import common, history, papers, publish
 
 
 def parse_command_line():
@@ -41,42 +41,54 @@ def load_config(path):
     return cfg
 
 
-def choose_paper(config):
+def choose_papers(config: dict) -> list:
+    """Choose papers to publish"""
     paper_cfg = papers.get_paper_cfg(config)
-    history = papers.load_history(paper_cfg['history'])
+    history = history.load_history(paper_cfg['history'])
     papers_in_repo = papers.get_papers_in_repo(
         paper_cfg['repo_path'], 
         paper_cfg['repo_url']
     )
-    if paper := papers.select_paper(papers_in_repo, history):
-        history = papers.update_history(paper, history, paper_cfg['depth'])
-        papers.save_history(history, paper_cfg['history'])
 
-    return paper
+    lobsters_cfg = lobsters.get_lobsters_cfg(config)
+    papers_from_lobsters = lobsters.get_papers_from_lobsters(lobster_cfg)
+
+    papers = [
+        common.select_paper(papers_in_repo, history), 
+        common.select_paper(papers_from_lobsters, history)
+    ]
+    if config['publish'] != 0:
+        papers = papers[:config['publish']]
+
+    for paper in papers:
+        history = history.update_history(paper, history, paper_cfg['depth'])
+        history.save_history(history, paper_cfg['history'])
+
+    return papers
 
 
-def publish_paper(paper, config):
+def publish_paper(papers, config):
     publish_cfg = publish.get_publish_cfg(config)
     destinations = publish_cfg['destinations']
 
     if len(destinations) == 0:
         # No destinations. Print paper to stdout.
-        print(paper)
+        print(papers)
         return
    
     if 'discord' in destinations:
-        publish.to_discord(paper, publish_cfg['discord_credentials'])
+        publish.to_discord(papers, publish_cfg['discord_credentials'])
 
     if 'bluesky' in destinations:
-        publish.to_bluesky(paper, publish_cfg['bluesky_credentials'])
+        publish.to_bluesky(papers, publish_cfg['bluesky_credentials'])
     
 
 def main():
     args = parse_command_line()
     config = load_config(args.config)
 
-    paper = choose_paper(config)
-    publish_paper(paper, config)
+    papers = choose_papers(config)
+    publish_papers(papers, config)
 
 
 if __name__ == '__main__':

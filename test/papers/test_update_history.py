@@ -1,4 +1,4 @@
-from paperbot.papers import update_history, Paper
+from paperbot.history import update_history, Paper
 
 
 def test_update_history_empty():

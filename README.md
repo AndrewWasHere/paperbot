@@ -1,8 +1,6 @@
 # Paperbot
 
-The engine behind [lovedpaperbot](https://bsky.app/profile/lovedpaperbot.bsky.social) on Bluesky Social.
-
-It can also post elsewhere. Just add a publisher function!
+Bot to suggest a paper from the Papers We Love archive. Can post to Discord.
 
 ## License
 

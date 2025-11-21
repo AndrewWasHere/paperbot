@@ -3,14 +3,22 @@
 #
 
 # Places to publish paper suggestions (names of sections, below)
-destinations = ["discord", "bluesky"]
+destinations = []
+
+# Number of papers to publish -- at most one from each source.
+# Set to 0 to publish a paper from all sources.
+publish = 0
 
 [papers_we_love]
 # Path to locally cloned Papers We Love git repo.
-path = "~/projects/papers-we-love"
+path = "~/projects/forked/papers-we-love"
 
 # URL of remote Papers We Love git repo.
 url = "https://github.com/papers-we-love/papers-we-love"
+
+[lobsters]
+rss = https://lobste.rs/rss
+url = https://lobste.rs
 
 [history]
 # History buffer containing the last `depth` suggested papers, which will not
