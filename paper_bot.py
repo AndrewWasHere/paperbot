@@ -1,5 +1,6 @@
 import argparse
 import os
+from random import choices
 import sys
 
 if sys.version_info.major == 3 and sys.version_info.minor < 11:
@@ -58,7 +59,7 @@ def choose_papers(config: dict) -> list:
         common.select_paper(papers_from_lobsters, history)
     ]
     if config['publish'] != 0:
-        papers = papers[:config['publish']]
+        papers = choices(papers, k=min(config['publish'], len(papers)))
 
     for paper in papers:
         history = history.update_history(paper, history, paper_cfg['depth'])
