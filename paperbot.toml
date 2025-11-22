@@ -17,8 +17,8 @@ path = "~/projects/forked/papers-we-love"
 url = "https://github.com/papers-we-love/papers-we-love"
 
 [lobsters]
-rss = https://lobste.rs/rss
-url = https://lobste.rs
+rss = "https://lobste.rs/rss"
+url = "https://lobste.rs"
 
 [history]
 # History buffer containing the last `depth` suggested papers, which will not
