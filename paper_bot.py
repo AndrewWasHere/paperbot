@@ -8,7 +8,7 @@ if sys.version_info.major == 3 and sys.version_info.minor < 11:
 else:
     import tomllib
 
-from paperbot import common, history, papers, publish
+from paperbot import common, history, lobsters, papers, publish
 
 
 def parse_command_line():
@@ -44,52 +44,54 @@ def load_config(path):
 
 def choose_papers(config: dict) -> list:
     """Choose papers to publish"""
+    history_cfg = history.get_history_cfg(config)
+    hist = history.load_history(history_cfg['history'])
+
     paper_cfg = papers.get_paper_cfg(config)
-    history = history.load_history(paper_cfg['history'])
     papers_in_repo = papers.get_papers_in_repo(
         paper_cfg['repo_path'], 
         paper_cfg['repo_url']
     )
 
     lobsters_cfg = lobsters.get_lobsters_cfg(config)
-    papers_from_lobsters = lobsters.get_papers_from_lobsters(lobster_cfg)
+    papers_from_lobsters = lobsters.get_papers_from_lobsters(lobsters_cfg)
 
     pp = [
-        common.select_paper(papers_in_repo, history), 
-        common.select_paper(papers_from_lobsters, history)
+        common.select_paper(papers_in_repo, hist), 
+        common.select_paper(papers_from_lobsters, hist)
     ]
     if config['publish'] != 0:
         pp = choices(pp, k=min(config['publish'], len(pp)))
 
     for p in pp:
-        history = history.update_history(p, history, paper_cfg['depth'])
-        history.save_history(history, paper_cfg['history'])
+        hist = history.update_history(p, hist, history_cfg['depth'])
+        history.save_history(hist, history_cfg['history'])
 
-    return papers
+    return pp
 
 
-def publish_paper(papers, config):
+def publish_papers(pp, config):
     publish_cfg = publish.get_publish_cfg(config)
     destinations = publish_cfg['destinations']
 
     if len(destinations) == 0:
         # No destinations. Print paper to stdout.
-        print(papers)
+        print(pp)
         return
    
     if 'discord' in destinations:
-        publish.to_discord(papers, publish_cfg['discord_credentials'])
+        publish.to_discord(pp, publish_cfg['discord_credentials'])
 
     if 'bluesky' in destinations:
-        publish.to_bluesky(papers, publish_cfg['bluesky_credentials'])
+        publish.to_bluesky(pp, publish_cfg['bluesky_credentials'])
     
 
 def main():
     args = parse_command_line()
     config = load_config(args.config)
 
-    papers = choose_papers(config)
-    publish_papers(papers, config)
+    pp = choose_papers(config)
+    publish_papers(pp, config)
 
 
 if __name__ == '__main__':

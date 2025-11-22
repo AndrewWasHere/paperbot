@@ -9,7 +9,6 @@ def get_lobsters_cfg(config: dict) -> dict:
     cfg = dict(
         rss=config['lobsters']['rss'],
         url=config['lobsters']['url'],
-        **get_history_cfg()
     )
 
     return cfg

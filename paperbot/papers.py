@@ -15,7 +15,6 @@ def get_paper_cfg(config: dict) -> dict:
     cfg = dict(
         repo_path=config['papers_we_love']['path'],
         repo_url=config['papers_we_love']['url'],
-        **get_history_cfg()
     )
 
     return cfg

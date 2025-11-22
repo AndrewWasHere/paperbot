@@ -1,4 +1,5 @@
 from collections import namedtuple
+from random import choice
 
 
 Paper = namedtuple('Paper', ['title', 'url'])
