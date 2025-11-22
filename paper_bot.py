@@ -54,15 +54,15 @@ def choose_papers(config: dict) -> list:
     lobsters_cfg = lobsters.get_lobsters_cfg(config)
     papers_from_lobsters = lobsters.get_papers_from_lobsters(lobster_cfg)
 
-    papers = [
+    pp = [
         common.select_paper(papers_in_repo, history), 
         common.select_paper(papers_from_lobsters, history)
     ]
     if config['publish'] != 0:
-        papers = choices(papers, k=min(config['publish'], len(papers)))
+        pp = choices(pp, k=min(config['publish'], len(pp)))
 
-    for paper in papers:
-        history = history.update_history(paper, history, paper_cfg['depth'])
+    for p in pp:
+        history = history.update_history(p, history, paper_cfg['depth'])
         history.save_history(history, paper_cfg['history'])
 
     return papers
