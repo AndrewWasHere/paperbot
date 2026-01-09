@@ -4,16 +4,6 @@ from paperbot.common import Paper
 from paperbot.history import get_history_cfg
 
 
-def get_lobsters_cfg(config: dict) -> dict:
-    """Extract lobsters configuration values from paperbot config."""
-    cfg = dict(
-        rss=config['lobsters']['rss'],
-        url=config['lobsters']['url'],
-    )
-
-    return cfg
-
-
 def read_lobsters_rss(rss: str) -> list:
     """Extract [Paper(title, url), ...] from lobsters rss feed"""
     resp = requests.get(rss)
@@ -39,9 +29,9 @@ def read_lobsters_front_page(url: str) -> list:
     return [Paper(a.text, a['href']) for a in articles]
 
 
-def get_papers_from_lobsters(config: dict):
+def get_papers_from_lobsters(config: dict) -> list:
     """Return list of papers from lobsters"""
-    papers= read_lobsters_rss(config['rss'])
+    papers = read_lobsters_rss(config['rss'])
     if len(papers) == 0:
         papers = read_lobsters_front_page(config['url'])
 

@@ -6,36 +6,12 @@ else:
 
 import requests
 
-# from atproto import Client, client_utils
-
 from paperbot.common import Paper
 
 msg = "'{0.title}' @ {0.url}"
 
-def get_publish_cfg(config: dict) -> dict:
-    """Extract publish configuration values from paperbot config."""
-    cfg = dict(
-        destinations=config['destinations'],
-        discord_credentials=config['discord']['credentials'],
-        discord_studygroup_credentials=config['discord-studygroup']['credentials'],
-        bluesky_credentials=config['bluesky']['credentials'],
-    )
-
-    return cfg
-
-
-def discord_url_from_credentials(path: str) -> str:
-    with open(path, 'rb') as f:
-        cfg = tomllib.load(f)
-
-    url = cfg['url']
-
-    return url
-
-
-def to_discord(papers: list[Paper], credentials: str):
-    """Publish `papers` to discord using `credentials`."""
-    url = discord_url_from_credentials(credentials)
+def to_discord(papers: list[Paper], webhook: str, name: str):
+    """Publish `papers` to discord using `webhook`."""
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -44,37 +20,5 @@ def to_discord(papers: list[Paper], credentials: str):
     body = {
         'content': content
     }
-    resp = requests.post(url, headers=headers, json=body)
-    print(f'`{content}` published to discord. resp={resp.status_code}')
-
-
-def bluesky_extract_from_credentials(path: str) -> tuple:
-    with open(path, 'rb') as f:
-        cfg = tomllib.load(f)
-
-    user = cfg['user']
-    pw = cfg['pw']
-
-    return user, pw
-
-
-# def to_bluesky(paper: Paper, credentials: str):
-#     """Publish `paper` to bluesky using `credentials`."""
-#     user, pw = bluesky_extract_from_credentials(credentials)
-#     content = client_utils.TextBuilder().text(
-#         f'How about reading '
-#     ).link(
-#         f'"{paper.title}"', 
-#         paper.url
-#     ).text(
-#         ' ('
-#     ).link(
-#         f'{paper.url}',
-#         paper.url
-#     ).text(
-#         ')?'
-#     )
-#     client = Client()
-#     client.login(user, pw)
-#     client.send_post(text=content)
-#     print(f'`How about reading ["{paper.title}"]({paper.url})?` published to bluesky.')
+    resp = requests.post(webhook, headers=headers, json=body)
+    print(f'`{content}` published to {name}. resp={resp.status_code}')

@@ -1,6 +1,17 @@
 # Paperbot
 
-Bot to suggest a paper from the Papers We Love archive. Can post to Discord.
+Bot to suggest a paper from the Papers We Love archive and other sources. 
+Can post to Discord.
+
+## Test
+
+To test, from the `test/` directory, run
+
+```shell
+PYTHONPATH=.. pytest .
+```
+
+This assumes the required packages are installed for the active python
 
 ## License
 

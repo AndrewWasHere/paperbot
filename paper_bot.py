@@ -36,9 +36,8 @@ def load_config(path):
 
     cfg['papers_we_love']['path'] = expand_path(cfg['papers_we_love']['path'])
     cfg['history']['path'] = expand_path(cfg['history']['path'])
-    cfg['discord']['credentials'] = expand_path(cfg['discord']['credentials'])
-    cfg['discord-studygroup']['credentials'] = expand_path(cfg['discord-studygroup']['credentials'])
-    cfg['bluesky']['credentials'] = expand_path(cfg['bluesky']['credentials'])
+    for key in cfg['destinations']:
+        cfg['destinations'][key]['credentials'] = expand_path(cfg['destinations'][key]['credentials'])
 
     return cfg
 
@@ -54,7 +53,7 @@ def choose_papers(config: dict) -> list:
         paper_cfg['repo_url']
     )
 
-    lobsters_cfg = lobsters.get_lobsters_cfg(config)
+    lobsters_cfg = config['lobsters']
     papers_from_lobsters = lobsters.get_papers_from_lobsters(lobsters_cfg)
 
     pp = [
@@ -72,23 +71,25 @@ def choose_papers(config: dict) -> list:
 
 
 def publish_papers(pp, config):
-    publish_cfg = publish.get_publish_cfg(config)
-    destinations = publish_cfg['destinations']
+    destinations = config['publish_to']
 
     if len(destinations) == 0:
         # No destinations. Print paper to stdout.
         print(pp)
         return
    
-    if 'discord' in destinations:
-        publish.to_discord(pp, publish_cfg['discord_credentials'])
+    for d in destinations:
+        credentials_file = config['destinations'][d]['credentials']
+        with open(credentials_file, 'rb') as f:
+            credentials = tomllib.load(f)
 
-    if 'discord-studygroup' in destinations:
-        publish.to_discord(pp, publish_cfg['discord_studygroup_credentials'])
+        service = credentials['service']
+        
+        if service == 'Discord':
+            publish.to_discord(pp, credentials['url'], d)
+        else:
+            print(f'Unable to publish to {d} because it is an unknown service, "{service}"')
 
-    if 'bluesky' in destinations:
-        publish.to_bluesky(pp, publish_cfg['bluesky_credentials'])
-    
 
 def main():
     args = parse_command_line()
