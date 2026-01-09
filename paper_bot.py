@@ -37,6 +37,7 @@ def load_config(path):
     cfg['papers_we_love']['path'] = expand_path(cfg['papers_we_love']['path'])
     cfg['history']['path'] = expand_path(cfg['history']['path'])
     cfg['discord']['credentials'] = expand_path(cfg['discord']['credentials'])
+    cfg['discord-studygroup']['credentials'] = expand_path(cfg['discord-studygroup']['credentials'])
     cfg['bluesky']['credentials'] = expand_path(cfg['bluesky']['credentials'])
 
     return cfg
@@ -81,6 +82,9 @@ def publish_papers(pp, config):
    
     if 'discord' in destinations:
         publish.to_discord(pp, publish_cfg['discord_credentials'])
+
+    if 'discord-studygroup' in destinations:
+        publish.to_discord(pp, publish_cfg['discord_studygroup_credentials'])
 
     if 'bluesky' in destinations:
         publish.to_bluesky(pp, publish_cfg['bluesky_credentials'])

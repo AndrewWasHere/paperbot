@@ -17,6 +17,7 @@ def get_publish_cfg(config: dict) -> dict:
     cfg = dict(
         destinations=config['destinations'],
         discord_credentials=config['discord']['credentials'],
+        discord_studygroup_credentials=config['discord-studygroup']['credentials'],
         bluesky_credentials=config['bluesky']['credentials'],
     )
 
